@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+    // шрифт
+    // --font-family-main:
+    //     "Montserrat",
+    //     system-ui,
+    //     -apple-system,
+    //     "Segoe UI",
+    //     roboto,
+    //     "Helvetica Neue",
+    //     "Noto Sans",
+    //     "Liberation Sans",
+    //     arial,
+    //     sans-serif,
+    //     "Apple Color Emoji",
+    //     "Segoe UI Emoji",
+    //     "Segoe UI Symbol",
+    //     "Noto Color Emoji";
+    --font-inter: 'Inter', sans-serif;
+
+    // размеры шрифтов
+
+    // цвета
+    --black: #000;
+    --white: #fff;
+    --light-white: rgb(255 255 255 / 50%);
+    // z-index
+    --modal-z-index: 1011;
+    --page-z-index: 1001;
+    --popup-z-index: 1012;
+}

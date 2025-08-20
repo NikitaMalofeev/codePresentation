@@ -1,0 +1,194 @@
+@use '../../app/styles/mixins' as mix;
+
+.auth {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    flex-grow: 1;
+    min-height: 100%;
+    background-color: #E1ECFB;
+    padding-top: 20px;
+    
+
+    &__icon {
+        margin: 33px auto;
+    }
+
+    &__tabs {
+        position: relative; /* для абсолютного позиционирования фона */
+        display: flex;
+        background-color: #EBEBED;
+        border-radius: 50px;
+        max-width: 90%;
+        z-index: 5;
+        margin: 0 auto 50px;
+        overflow: hidden; /* чтобы анимируемый фон не «вылезал» */
+    }
+
+    &__tab {
+        position: relative;
+        z-index: 2; /* чтобы текст был поверх анимируемого фона */
+        flex: 1; /* вкладки по 50% ширины */
+        text-align: center;
+
+        padding: 12px 29px;
+        border-radius: 50px;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19.36px;
+        color: #000000; /* по умолчанию текст чёрный */
+
+        cursor: pointer;
+        user-select: none;
+        transition: color 0.3s;
+    }
+
+    &__tab_active {
+        color: #ffffff; /* активная вкладка становится белой */
+    }
+
+    /* Анимированный фон под вкладками */
+    &__activeBg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;   /* фон занимает половину контейнера, т.к. вкладок 2 */
+        height: 100%;
+        background-color: #0F0E0E;
+        border-radius: 50px;
+        z-index: 1;
+    }
+
+    &__form {
+        position: relative;
+        padding: 0 27px;
+        z-index: 5;
+        padding-bottom: 16px;
+    }
+
+    &__wrapper {
+        display: flex;
+        align-items: end;
+        width: 100%;
+        
+    }
+    
+}
+
+
+.crutch {
+    height: 300px !important;
+    width: 100px;
+}
+
+
+.auth__container {
+    width: 100%;
+    height: 100%;
+    justify-content: end;
+    overflow-y: auto;
+    display: flex;
+    background-color: white;
+    border-radius: 50px 50px 0 0;
+    flex-direction: column;
+    transition: height 0.3s ease;
+    padding-bottom: 16px;
+}
+
+.forgotPassword {
+    display: inline-block;
+    color: #045FDD;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18.5px 42px;
+    width: 100%;
+}
+
+.resetPassword {
+    font-family: Inter;
+font-weight: 500;
+font-size: 16px;
+cursor: pointer;
+line-height: 100%;
+letter-spacing: 0%;
+text-align: center;
+color: #045FDD;
+margin-bottom: 39px;
+margin-top: 5px;
+
+&:hover {
+    opacity: 0.7;
+}
+}
+
+
+
+@include mix.respond-to('tablet-desktop') {
+
+    .form__grid {
+        justify-items: start;
+    }
+    .auth {
+       align-items: center;
+                               max-width: 960px;
+                            width: 100%;
+       justify-content: center;
+       padding: 32px;
+            &__wrapper {
+                            max-width: 960px;
+                            width: 100%;
+                height: 100%;
+                margin-top: 0;
+            }
+        &__container {
+            max-width: 960px;
+            
+            height: 100%;
+            border-radius: 15px;
+            justify-content: start;
+            padding: 0;
+            overflow-y: hidden;
+        }
+
+        &__form__container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        &__form {
+            height: 100%;
+            padding-bottom: 32px;
+        }
+
+
+        &__tabs {
+            min-height: 44px;
+            margin: 0 auto 34px;
+        }
+
+        &__tab {
+            min-height: 44px;
+        }
+
+        & > div {
+            max-width: 960px;
+            max-height: 100%;
+        }
+
+
+    }
+
+    
+    .button {
+        max-width: 316px;
+        margin: 0 auto;
+    }
+}

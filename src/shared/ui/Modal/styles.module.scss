@@ -1,0 +1,166 @@
+@use '../../../app/styles/mixins' as mix;
+
+  .ModalFull {
+    position: fixed;
+    top: 50.5px;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: var(--modal-z-index);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Модалка с затемнением */
+  .ModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: var(--modal-z-index);
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; // чтобы "снизу" при BOTTOM
+  }
+
+  .ModalOverlayOpacity {
+        position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: var(--modal-z-index);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; // чтобы "снизу" при BOTTOM
+  }
+  
+  /* Контейнер контента внутри */
+  .content {
+    background: #fff;
+    -webkit-overflow-scrolling: touch;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  /* Размеры */
+  
+  .full {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+ // если нужно
+  }
+  
+  .middle {
+    position: fixed;
+    top: 50.5px;
+    max-width: 380px;
+    width: calc(100% - 32px);
+    margin: 0 auto;
+    height: 100%;
+    max-height: calc(100dvh - 118.5px);
+    border-radius: 10px 10px 40px 40px;
+    transform: translate(-50%, -50%);
+  }
+  
+  .mini {
+    position: fixed;
+    height: 100%;
+      max-width: 380px;
+    width: calc(100% - 32px);
+    max-height: 60dvh;
+    border-radius: 10px 10px 40px 40px;
+    bottom: 16px;
+    transform: translate(-50%, -50%);
+  }
+
+  .xxs {
+    position: fixed;
+    height: 100%;
+      max-width: 500px;
+    width: calc(100% - 32px);
+    max-height: 30dvh;
+    border-radius: 10px 10px 40px 40px;
+    bottom: 16px;
+    transform: translate(-50%, -50%);
+  }
+
+  .mcsq {
+    position: fixed;
+    height: 100%;
+      max-width: 380px;
+    width: calc(100% - 32px);
+    max-height: max-content;
+    border-radius: 10px;
+    bottom: 16px;
+    transform: translate(-50%, -50%);
+  }
+
+  .mc {
+    position: fixed;
+      max-width: 380px; 
+    width: calc(100% - 32px);
+    min-height: max-content;
+    max-height: max-content;
+    border-radius: 10px 10px 40px 40px;
+    bottom: 16px;
+    transform: translate(-50%, -50%);
+  }
+
+  .closeIcon {
+    position: fixed;
+    max-width: 20px;
+    max-height: 20px;
+    top: 16px;
+    right: 16px;
+  }
+
+  .title {
+    font-family: var(--font-inter);
+    font-size: 24px;
+    font-weight: 500;
+    max-width: 195px;
+    line-height: 26.4px;
+    text-align: left;
+    color: #0F0E0E;
+    margin: 32px 0 16px 24px;
+  }
+
+  .header {
+    width: 100%;
+  }
+
+  
+
+  @include mix.respond-to('tablet-desktop') {
+    .middle {
+      max-width: 380px;
+      max-height: 666px;
+    }
+
+    .mini {
+      max-width: 380px;
+      bottom: 25%;
+      max-height: 50vh;
+    }
+
+    .content {
+      padding-bottom: 16px;
+    }
+
+    .mc {
+      max-width: 350px;
+      width: 100%;
+      top: 10%;
+    }
+  }
+
+
+  @include mix.respond-dims($min-w: 801px, $min-h: 500px, $max-h: 750px) {
+  .middle {
+      max-height: 500px;
+    }
+}

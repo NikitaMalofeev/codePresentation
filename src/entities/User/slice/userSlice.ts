@@ -1,0 +1,147 @@
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AllUserInfo, userAllData, UserLogin, UserPersonalAccount, userType } from "../types/userTypes";
+import { setPersonType } from "entities/User/api/userApi";
+import { userLogin } from "../api/userApi";
+import { setError } from "entities/Error/slice/errorSlice";
+import { RootState } from "app/providers/store/config/store";
+interface UserState {
+    is_active: boolean;
+    loading: boolean;
+    is_vip: boolean;
+    person_type: string;
+    error: string | null;
+    success: boolean;
+    userId: string | null;
+    token: string;
+    user: userType;
+    userPersonalAccountInfo: UserPersonalAccount | null
+    allUserDataForDocuments: AllUserInfo | null;
+    userForPersonalAccount: userAllData | null;
+}
+
+const initialState: UserState = {
+    is_active: false,
+    loading: false,
+    error: '',
+    is_vip: false,
+    person_type: '',
+    success: false,
+    userId: null,
+    token: "",
+    user: {
+        phone: "",
+        email: "",
+        first_name: "",
+        patronymic: "",
+        last_name: "",
+        is_agreement: false,
+    },
+    userPersonalAccountInfo: null,
+    allUserDataForDocuments: null,
+    userForPersonalAccount: null,
+};
+
+
+
+export const setPersonTypeThunk = createAsyncThunk<
+    void,
+    { person_type: string, onSuccess: () => void },
+    { rejectValue: string, state: RootState }
+>(
+    "user/setPersonTypeThunk",
+    async ({ person_type, onSuccess }, { rejectWithValue, getState }) => {
+        try {
+            const response = await setPersonType(person_type);
+
+            response && onSuccess()
+        } catch (error: any) {
+            return rejectWithValue(
+                error.response?.data?.message || "Ошибка при отправке данных"
+            );
+        }
+    }
+);
+
+export const userLoginThunk = createAsyncThunk<
+    void,
+    { data: UserLogin, onSuccess: () => void },
+    { rejectValue: string }
+>(
+    "user/userLoginThunk",
+    async ({ data, onSuccess }, { rejectWithValue, dispatch }) => {
+        try {
+            const response = await userLogin(data);
+            // console.log("Токен из API:", response.token);
+
+            if (response.token) {
+                dispatch(setUserToken(response.token));
+                dispatch(setUserData({
+                    phone: response.phone ?? "",
+                    email: response.email ?? "",
+                }));
+                onSuccess()
+            } else {
+                console.error("Токен отсутствует в ответе сервера:", response);
+            }
+
+            return response;
+        } catch (error: any) {
+            dispatch(setError(error.response?.data?.errorText || "Ошибка при входе"));
+            return rejectWithValue(error.response?.data?.message || "Ошибка при отправке данных");
+        }
+    }
+);
+
+
+
+
+export const userSlice = createSlice({
+    name: "user",
+    initialState,
+    reducers: {
+        setUserId: (state, action: PayloadAction<string>) => {
+            state.userId = action.payload;
+        },
+        setUserData: (state, action: PayloadAction<userType>) => {
+            state.user = action.payload;
+        },
+        // Полная замена userForPersonalAccount (перезапись всего объекта)
+        // Частичное обновление userForPersonalAccount
+        updateUserAllData: (state, action: PayloadAction<Partial<userAllData>>) => {
+            // Если userForPersonalAccount сейчас `null`, инициализируем объект
+            if (!state.userForPersonalAccount) {
+                state.userForPersonalAccount = { ...action.payload };
+            } else {
+                // Расширяем существующий объект новыми (или обновленными) полями
+                state.userForPersonalAccount = {
+                    ...state.userForPersonalAccount,
+                    ...action.payload,
+                };
+            }
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(userLoginThunk.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.success = false;
+            })
+            .addCase(userLoginThunk.fulfilled, (state) => {
+                state.loading = false;
+                state.success = true;
+            })
+            .addCase(userLoginThunk.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+
+    },
+});
+
+export const {
+    setUserId,
+    setUserData,
+} = userSlice.actions;
+
+export default userSlice.reducer;
